@@ -28,6 +28,8 @@
       Your browser does not support the video tag.
     </video>
 
+    <div id="scroll-progress"></div>
+
     <div class="header-container">
       <header>
         <nav class="navbar navbar-expand-lg navbar-light navbar-custom">
@@ -71,7 +73,7 @@
                 <li class="nav-item mr-4">
                   <a
                     class="nav-link"
-                    href="https://drive.google.com/drive/folders/19FcgCnmhElFzVo_l0LVbhHCGUedUQXWc?usp=drive_link"
+                    href="#"
                     target="_blank"
                   >
                     <img src="drive.webp" id="drive" />
@@ -84,8 +86,72 @@
       </header>
     </div>
 
-    <section id="top"></section>
-    <br /><br /><br />
+    <section id="top" class="hero">
+      <div class="hero-orb orb-1"></div>
+      <div class="hero-orb orb-2"></div>
+      <div class="hero-inner container">
+        <p class="hero-kicker">
+          <i class="fas fa-certificate"></i> Certification Portfolio
+        </p>
+        <h1 class="hero-title" id="hero-title">RAJNEESH KUSHWAHA</h1>
+        <p class="hero-sub">
+          <span id="typed-text"></span><span class="caret"></span>
+        </p>
+
+        <div class="hero-stats">
+          <div class="stat">
+            <span class="stat-num" data-stat="total">0</span>
+            <span class="stat-label">Certificates</span>
+          </div>
+          <div class="stat">
+            <span class="stat-num" data-stat="sections">0</span>
+            <span class="stat-label">Sections</span>
+          </div>
+          <div class="stat">
+            <span class="stat-num" data-stat="coding">0</span>
+            <span class="stat-label">Coding Contests</span>
+          </div>
+        </div>
+
+        <form class="ai-search" id="ai-search-form">
+          <i class="fas fa-robot"></i>
+          <input
+            id="ai-search-input"
+            type="text"
+            placeholder="Ask AI: show leetcode certificates"
+            autocomplete="off"
+            aria-label="Ask the certificate assistant"
+          />
+          <button type="submit">Ask</button>
+        </form>
+        <div class="hero-chips">
+          <button type="button" class="hero-chip" data-q="Show LeetCode certificates">LeetCode</button>
+          <button type="button" class="hero-chip" data-q="Show CodeChef certificates">CodeChef</button>
+          <button type="button" class="hero-chip" data-q="Mark sheets">Mark sheets</button>
+          <button type="button" class="hero-chip" data-q="How many certificates are there?">How many?</button>
+          <button type="button" class="hero-chip" data-q="Summarize my profile">Summarize</button>
+          <button type="button" class="hero-chip" data-q="Surprise me">Surprise me</button>
+        </div>
+        <p class="hero-hint">
+          <kbd>/</kbd> command palette &middot; <kbd>?</kbd> shortcuts
+        </p>
+      </div>
+    </section>
+
+    <div id="toolbar" class="container">
+      <div class="tb-chips" id="tb-chips" role="group" aria-label="Filter certificates"></div>
+      <div class="tb-actions">
+        <div class="tb-views" role="group" aria-label="Card size">
+          <button type="button" class="tb-btn tb-view" data-cols="4" title="Compact" aria-label="Compact view"><i class="fas fa-th"></i></button>
+          <button type="button" class="tb-btn tb-view" data-cols="3" title="Default" aria-label="Default view"><i class="fas fa-th-large"></i></button>
+          <button type="button" class="tb-btn tb-view" data-cols="2" title="Large" aria-label="Large view"><i class="fas fa-square"></i></button>
+        </div>
+        <button type="button" class="tb-btn" id="tb-random" title="Surprise me (R)" aria-label="Random certificate"><i class="fas fa-dice"></i></button>
+        <button type="button" class="tb-btn" id="tb-slideshow" title="Slideshow (S)" aria-label="Start slideshow"><i class="fas fa-play"></i></button>
+        <button type="button" class="tb-btn" id="tb-search" title="Command palette (/)" aria-label="Open command palette"><i class="fas fa-search"></i></button>
+        <button type="button" class="tb-btn" id="tb-help" title="Shortcuts (?)" aria-label="Keyboard shortcuts"><i class="fas fa-keyboard"></i></button>
+      </div>
+    </div>
 
     <div id="video-content">
       <div class="container img-cont">
@@ -546,12 +612,98 @@
       </div>
       <div class="footer-container">
         <footer>
-          <p id="footer-text">
-            &copy; 2024 All rights reserved by Rohan Samuel J.
+          <p id="footer-text" class="footer-copy">
+            &copy; 2026 All rights reserved by Rajneesh Kushwaha.
           </p>
+          <div class="dev-credit">
+            <i class="fas fa-code dev-icon"></i>
+            <span class="dev-label">Developed By:</span>
+            <span class="dev-name">Rajneesh Kushwaha</span>
+          </div>
         </footer>
       </div>
     </div>
+    <button id="ai-fab" type="button" aria-label="Open AI assistant">
+      <i class="fas fa-robot"></i><span class="ai-fab-pulse"></span>
+    </button>
+
+    <aside id="ai-panel" aria-hidden="true" aria-label="AI certificate assistant">
+      <div class="ai-head">
+        <div class="ai-avatar"><i class="fas fa-robot"></i></div>
+        <div><strong>Cert Assistant</strong><small>Smart search &amp; summary</small></div>
+        <button id="ai-close" type="button" aria-label="Close assistant"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="ai-body" id="ai-body" aria-live="polite"></div>
+      <div class="ai-suggest" id="ai-suggest"></div>
+      <form class="ai-input" id="ai-form">
+        <input id="ai-input" type="text" placeholder="Ask about the certificates..." autocomplete="off" />
+        <button type="submit" aria-label="Send"><i class="fas fa-paper-plane"></i></button>
+      </form>
+    </aside>
+
+    <div id="filter-pill">
+      <span id="filter-label"></span>
+      <button id="filter-clear" type="button">Clear</button>
+    </div>
+
+    <div id="lightbox" aria-hidden="true" role="dialog" aria-label="Certificate viewer">
+      <div class="lb-toolbar">
+        <button class="lb-btn" id="lb-zoom-out" type="button" aria-label="Zoom out" title="Zoom out (-)"><i class="fas fa-search-minus"></i></button>
+        <button class="lb-btn" id="lb-zoom-in" type="button" aria-label="Zoom in" title="Zoom in (+)"><i class="fas fa-search-plus"></i></button>
+        <button class="lb-btn" id="lb-reset" type="button" aria-label="Reset zoom" title="Reset zoom (0)"><i class="fas fa-compress"></i></button>
+        <button class="lb-btn" id="lb-play" type="button" aria-label="Slideshow" aria-pressed="false" title="Slideshow (Space)"><i class="fas fa-play"></i></button>
+        <button class="lb-btn" id="lb-fav" type="button" aria-label="Favorite" aria-pressed="false" title="Favorite (F)"><i class="far fa-heart"></i></button>
+        <button class="lb-btn" id="lb-link" type="button" aria-label="Copy link" title="Copy link"><i class="fas fa-link"></i></button>
+      </div>
+      <button class="lb-btn lb-close" type="button" aria-label="Close"><i class="fas fa-times"></i></button>
+      <button class="lb-btn lb-prev" type="button" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>
+      <figure>
+        <img id="lb-img" alt="" draggable="false" />
+        <figcaption id="lb-cap"></figcaption>
+      </figure>
+      <button class="lb-btn lb-next" type="button" aria-label="Next"><i class="fas fa-chevron-right"></i></button>
+      <div class="lb-progress"><span></span></div>
+    </div>
+
+    <div id="cmdk" aria-hidden="true" role="dialog" aria-label="Command palette">
+      <div class="cmdk-box">
+        <div class="cmdk-head">
+          <i class="fas fa-search"></i>
+          <input id="cmdk-input" type="text" placeholder="Search certificates or run a command..." autocomplete="off" aria-label="Search" />
+          <kbd>Esc</kbd>
+        </div>
+        <ul id="cmdk-list" role="listbox"></ul>
+        <div class="cmdk-foot">
+          <span><kbd>&uarr;</kbd><kbd>&darr;</kbd> navigate</span>
+          <span><kbd>Enter</kbd> select</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="help-modal" aria-hidden="true" role="dialog" aria-label="Keyboard shortcuts">
+      <div class="help-box">
+        <h3>Keyboard shortcuts</h3>
+        <ul>
+          <li><kbd>/</kbd> or <kbd>Ctrl</kbd>+<kbd>K</kbd><span>Command palette</span></li>
+          <li><kbd>A</kbd><span>AI assistant</span></li>
+          <li><kbd>R</kbd><span>Random certificate</span></li>
+          <li><kbd>S</kbd><span>Slideshow</span></li>
+          <li><kbd>F</kbd><span>Show favorites</span></li>
+          <li><kbd>&larr;</kbd><kbd>&rarr;</kbd><span>Previous / next (viewer)</span></li>
+          <li><kbd>+</kbd><kbd>-</kbd><kbd>0</kbd><span>Zoom (viewer)</span></li>
+          <li><kbd>Space</kbd><span>Play / pause (viewer)</span></li>
+          <li><kbd>Esc</kbd><span>Close</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div id="toast" role="status"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
     <script src="script.js"></script>
+    <script src="animations.js"></script>
+    <script src="features.js"></script>
   </body>
 </html>
